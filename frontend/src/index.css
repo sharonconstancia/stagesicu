@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body{
+  @apply bg-gray-100 duration-300 ease-in-out;
+}
+
+/* body.dark{
+  @apply bg-gray-950 duration-300 ease-in-out 
+} */

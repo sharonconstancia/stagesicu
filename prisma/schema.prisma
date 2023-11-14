@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Bloc {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  numero String
+  adresse String
+  nombreporte String
+  portelibre String
+  porteoccuper String
+  chambre Chambre []
+}
+model Chambre {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nom String
+  nombrecloison Int
+  reference String
+  disponibiliter String
+  blocId String @db.ObjectId
+  bloc Bloc @relation(fields: [blocId],references: [id], onDelete: Cascade)
+  locateur Locateur []
+}
+model Etudiant  {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nometudiant String
+  prenom String
+  numero String @unique
+  niveau String
+  parcour String
+  tel Int
+  association String
+  dateinscription DateTime
+  compte Compte?
+  locateur Locateur []
+  inscription Inscription []
+
+  // Other fields
+}
+model Inscription  {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  pere String
+  mere String
+  date DateTime
+  lieux String
+  adresse String
+  inscrit Boolean @default(false)
+  etudiantId String @db.ObjectId
+  etudiant Etudiant @relation(fields: [etudiantId],references: [id], onDelete: Cascade)
+}
+model Compte {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  email String @unique
+password String 
+isAdmin Boolean @default(false)
+numero String ? @unique
+clerkId String? @unique
+etudiant Etudiant? @relation(fields: [numero],references: [numero], onDelete: Cascade)
+
+}
+
+model Locateur {
+
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  dateentre DateTime
+  datesortie DateTime
+  observation String
+ // blocId String @db.ObjectId
+  //bloc Bloc @relation(fields: [blocId],references: [id], onDelete: Cascade)
+  chambreId String @db.ObjectId
+  chambre Chambre @relation(fields: [chambreId],references: [id])
+  etudiantId String @db.ObjectId
+  etudiant Etudiant @relation(fields: [etudiantId],references: [id], onDelete: Cascade)
+
+   
+  // Other fields
+}
+
